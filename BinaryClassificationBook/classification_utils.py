@@ -160,7 +160,7 @@ def plot_harmonic_precision_recall(y_true, y_pred, ax, label=False):
     hprec, hrec, _ = harmonic_precision_recall(y_true, y_pred)
     area = auc(hrec, hprec)
     
-    ax.plot(hrec,hprec, label='AUhPR (area={0:.2f})'.format(area))
+    ax.plot(hrec,hprec, label='hPR (area={0:.2f})'.format(area))
     
     x = np.linspace(0,1)
     if label:
@@ -189,13 +189,14 @@ def roc_pr_hpr_report(y_true, y_probs, ascending_gain=False):
     ## PR plane
     # PR curve
     prec, rec, _ = precision_recall_curve(y_true, y_probs)
+    ap = auc(rec, prec)
 
     # baseline curve
     pi = y_true.mean()
     x = np.linspace(pi,1)
     y = 1/(-1/x + (1+1/pi))
 
-    ax[1].plot(rec, prec, label='Model')
+    ax[1].plot(rec, prec, label='Model (area={0:.2f})'.format(ap))
     ax[1].plot(x, y, linestyle='--', color='gray', label='Baseline F1 model')
     ax[1].set_title("PR curve")
     ax[1].set_xlabel("Recall"); ax[1].set_ylabel("Precision")
